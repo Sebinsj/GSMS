@@ -1,10 +1,9 @@
-import mysql.connector
+from sql_connection import get_sql_connection
 
-def get_all_products():
-    cnx = mysql.connector.connect(user='root', password='admin',
-                                    host='127.0.0.1',
-                                    database='grocerystoresystem')
-    cursor = cnx.cursor()
+def get_all_products(connection):
+    
+    cursor = connection.cursor()
+    
     query = ("SELECT products.product_id,products.name,products.uom_id,products.price_per_unit,uom.uom_name FROM products inner join uom on products.uom_id=uom.uom_id")
     cursor.execute(query)
     
@@ -21,9 +20,10 @@ def get_all_products():
             }
         )
         
-    cnx.close()
+    
     return response
 
 
 if __name__ =='__main__':
-    print(get_all_products())
+    connection=get_sql_connection()
+    print(get_all_products(connection))
